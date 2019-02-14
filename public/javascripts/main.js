@@ -1,7 +1,7 @@
 window.onload = () => {
   const ironhackBCN = {
-    lat: 41.386230, 
-    lng: 2.174980
+    lat: -23.5505199,
+    lng: -46.63330939999997
   };
   
   const markers = []
