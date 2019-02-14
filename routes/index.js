@@ -9,12 +9,15 @@ router.get('/new', (req, res, next) => {
 
 // POST => to create new restaurant and save it to the DB
 router.post('/', (req, res, next) => {
-  // add location object here
-  
+  let location = {
+		type: 'Point',
+		coordinates: [req.body.longitude, req.body.latitude]
+	};
 
 	const newRestaurant = new Restaurant({
 		name: req.body.name,
-		description: req.body.description
+		description: req.body.description,
+		location: location
 	});
 
 	newRestaurant.save((error) => {

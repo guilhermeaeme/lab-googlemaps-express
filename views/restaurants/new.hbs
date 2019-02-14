@@ -2,10 +2,17 @@
 <form method="POST" action="/restaurants">
     <input type="text" name="name" placeholder="name">
     <input type="text" name="description" placeholder="description">
-{{!-- you will start using "address" part when you 
-set up your model to be able to store lat and long, so add address here:  --}}
-    
+
+    <label>Address</label>
+    <input type="hidden" id="latitude" name="latitude" placeholder="latitude" >
+    <input type="hidden" id="longitude" name="longitude" placeholder="longitude">
+
+    <input type="text" id="address" name="address" placeholder="address">
+    <input id="getLatLng" type="button" value="get lat lng">
 
     <input type="submit" name="" id="submit">
 </form>
 <a href="/restaurants">Back to the list</a>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUeQXCyJDlhOtCB8JwWAk8zCxpjk6k-jo"></script>
+<script type="text/javascript" src="/javascripts/main.js"></script>
