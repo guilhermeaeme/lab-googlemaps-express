@@ -5,7 +5,7 @@ window.onload = () => {
   };
   
   const markers = []
-  
+  const bounds = new google.maps.LatLngBounds();
   const map = new google.maps.Map(document.getElementById('map'), {
     zoom: 13,
     center: ironhackBCN
@@ -34,6 +34,7 @@ window.onload = () => {
         lat: restaurant.location.coordinates[1],
         lng: restaurant.location.coordinates[0]
       };
+      bounds.extend(center);
       const pin = new google.maps.Marker({
         position: center,
         map: map,
@@ -41,9 +42,37 @@ window.onload = () => {
       });
       markers.push(pin);
     });
+    map.fitBounds(bounds);
   }
   
   getRestaurants();
+
+  /*
+  const directionsService = new google.maps.DirectionsService;
+  const directionsDisplay = new google.maps.DirectionsRenderer;
+
+  const directionRequest = {
+    origin: { lat: 41.3977381, lng: 2.190471916},
+    destination: 'Madrid, ES',
+    travelMode: 'DRIVING'
+  };
+
+  directionsService.route(
+    directionRequest,
+    function(response, status) {
+      if (status === 'OK') {
+        // everything is ok
+        directionsDisplay.setDirections(response);
+
+      } else {
+        // something went wrong
+        window.alert('Directions request failed due to ' + status);
+      }
+    }
+  );
+
+  directionsDisplay.setMap(map);
+  */
 };
 
 const geocoder = new google.maps.Geocoder();

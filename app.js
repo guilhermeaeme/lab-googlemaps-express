@@ -49,6 +49,10 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // default value for title local
 app.locals.title = 'Google Maps | Express';
 
+app.get('/', (req, res, next) => {
+  res.redirect('/restaurants');
+});
+
 // routes middleware goes here
 const index = require('./routes/index');
 app.use('/restaurants', index);

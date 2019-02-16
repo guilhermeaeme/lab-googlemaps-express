@@ -17,6 +17,7 @@ router.post('/', (req, res, next) => {
 	const newRestaurant = new Restaurant({
 		name: req.body.name,
 		description: req.body.description,
+		address: req.body.address,
 		location: location
 	});
 
@@ -57,8 +58,15 @@ router.post('/:restaurant_id', (req, res, next) => {
 		if (error) { 
       next(error); 
     } else {
+			let location = {
+				type: 'Point',
+				coordinates: [req.body.longitude, req.body.latitude]
+			};
+
 			restaurant.name        = req.body.name;
 			restaurant.description = req.body.description;
+			restaurant.address  	 = req.body.address;
+			restaurant.location    = location;
 			restaurant.save(error => {
 				if (error) { 
 					next(error); 
