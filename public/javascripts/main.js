@@ -1,51 +1,53 @@
 window.onload = () => {
-  const ironhackBCN = {
-    lat: -23.5505199,
-    lng: -46.63330939999997
-  };
-  
-  const markers = []
-  const bounds = new google.maps.LatLngBounds();
-  const map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 13,
-    center: ironhackBCN
-  });
-
-  let center = {
-    lat: undefined,
-    lng: undefined
-  }; 
-
-  function getRestaurants() {
-    axios.get("/restaurants/api")
-     .then( response => {
-       console.log(response.data.restaurants);
-       placeRestaurants(response.data.restaurants);
-     })
-     .catch(error => {
-       console.log(error);
-     })
-   }
-  
-   function placeRestaurants(restaurants){
-    restaurants.forEach(function(restaurant){
-      console.log(restaurant);
-      const center = {
-        lat: restaurant.location.coordinates[1],
-        lng: restaurant.location.coordinates[0]
-      };
-      bounds.extend(center);
-      const pin = new google.maps.Marker({
-        position: center,
-        map: map,
-        title: restaurant.name
-      });
-      markers.push(pin);
+  if(document.getElementById('map')){
+    const ironhackBCN = {
+      lat: -23.5505199,
+      lng: -46.63330939999997
+    };
+    
+    const markers = []
+    const bounds = new google.maps.LatLngBounds();
+    const map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: ironhackBCN
     });
-    map.fitBounds(bounds);
+
+    let center = {
+      lat: undefined,
+      lng: undefined
+    }; 
+
+    function getRestaurants() {
+      axios.get("/restaurants/api")
+      .then( response => {
+        console.log(response.data.restaurants);
+        placeRestaurants(response.data.restaurants);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    }
+    
+    function placeRestaurants(restaurants){
+      restaurants.forEach(function(restaurant){
+        console.log(restaurant);
+        const center = {
+          lat: restaurant.location.coordinates[1],
+          lng: restaurant.location.coordinates[0]
+        };
+        bounds.extend(center);
+        const pin = new google.maps.Marker({
+          position: center,
+          map: map,
+          title: restaurant.name
+        });
+        markers.push(pin);
+      });
+      map.fitBounds(bounds);
+    }
+    
+    getRestaurants();
   }
-  
-  getRestaurants();
 
   /*
   const directionsService = new google.maps.DirectionsService;
