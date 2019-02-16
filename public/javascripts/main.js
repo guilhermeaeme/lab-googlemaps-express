@@ -1,33 +1,40 @@
 window.onload = () => {
-  if(document.getElementById('map')){
-    const ironhackBCN = {
-      lat: -23.5505199,
-      lng: -46.63330939999997
-    };
-    
-    const markers = []
+  if(document.getElementById('map')) {
     const bounds = new google.maps.LatLngBounds();
+    const markers = []
+  
+    const ironhackSP = {
+      lat: -23.56173216,
+      lng: -46.6623271
+    };
+  
     const map = new google.maps.Map(document.getElementById('map'), {
       zoom: 13,
-      center: ironhackBCN
+      center: ironhackSP
     });
-
-    let center = {
-      lat: undefined,
-      lng: undefined
-    }; 
-
+  
     function getRestaurants() {
       axios.get("/restaurants/api")
-      .then( response => {
-        console.log(response.data.restaurants);
-        placeRestaurants(response.data.restaurants);
-      })
-      .catch(error => {
-        console.log(error);
-      })
+        .then( response => {
+          console.log(response.data.restaurants);
+          placeRestaurants(response.data.restaurants);
+        })
+        .catch(error => {
+          console.log(error);
+        })
     }
-    
+
+    function getRestaurant() {
+      axios.get(`/restaurants/api/${_ID}`)
+        .then( response => {
+          console.log(response.data.restaurant);
+          placeRestaurants([response.data.restaurant]);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    }
+  
     function placeRestaurants(restaurants){
       restaurants.forEach(function(restaurant){
         console.log(restaurant);
@@ -42,11 +49,19 @@ window.onload = () => {
           title: restaurant.name
         });
         markers.push(pin);
+        map.setCenter(center);
       });
-      map.fitBounds(bounds);
+
+      if(markers.length > 1) {
+        map.fitBounds(bounds);
+      }
     }
-    
-    getRestaurants();
+  
+    if(typeof _ID == 'undefined') {
+      getRestaurants();
+    } else {
+      getRestaurant();
+    }
   }
 
   /*
@@ -80,7 +95,6 @@ window.onload = () => {
     const geocoder = new google.maps.Geocoder();
 
     document.getElementById('getLatLng').addEventListener('click', function () {
-      // geocodeAddress(geocoder, map);
       geocodeAddress(geocoder);
     });
     
